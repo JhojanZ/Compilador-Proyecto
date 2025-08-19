@@ -1,0 +1,7 @@
+from errors import error
+
+class Lexer(sly.Lexer):
+    ...
+    def error(self, t):
+        error(f"Carácter ilegal '{t.value[0]}'", line=self.lineno)
+        self.index += 1
