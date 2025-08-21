@@ -1,24 +1,29 @@
-# Error handling in Compilator B-Minor
+# errors.py
+from rich.console import Console
 
-from rich import print
+console = Console()
+_errors_detected = 0  # Contador global de errores
 
-_error_detected = 0
-def error(message, line=None):
-    global _error_detected
-    if line:
-        print(f"[red]Error on line {line}: {message}[/red]")
+def error(message, lineno=None):
+    """
+    Imprime un mensaje de error formateado.
+    - message: texto del error
+    - lineno: número de línea
+    """
+    global _errors_detected
+    if lineno:
+        console.print(f"[red]Error en línea {lineno}: {message}[/red]")
     else:
-        print(f"[red]Error: {message}[/red]")
-    _error_detected += 1
+        console.print(f"[red]Error: {message}[/red]")
+    _errors_detected += 1
 
-def error_detected():
-    return _error_detected
+def get_error_count():
+    """ Devuelve la cantidad de errores detectados. """
+    return _errors_detected
 
-def clear_errors():
-    global _error_detected
-    _error_detected = 0
-    
+def reset_errors():
+    """ Reinicia el contador de errores. """
+    global _errors_detected
+    _errors_detected = 0
 
-
-
-error(    "This is a generic error message. Please provide more details.", line=42)
+# TO DO: Colocar advertencias

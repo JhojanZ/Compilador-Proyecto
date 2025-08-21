@@ -5,7 +5,7 @@ from errors import error
 class Lexer(sly.Lexer):
     tokens = {
         'ARRAY', 'AUTO', 'BOOLEAN', 'CHAR', 'ELSE', 'FALSE', 'FLOAT', 'FOR', 'FUNCTION',
-        'IF', 'INTEGER', 'RETURN', 'STRING', 'TRUE', 'VOID', 'WHILE', 'ASSIGN'
+        'IF', 'INTEGER', 'RETURN', 'STRING', 'TRUE', 'VOID', 'WHILE', 'ASSIGN', 'PRINT', 'DO',
 
         # Operators
         'LT', 'LE', 'GT', 'GE', 'EQ', 'NEQ', 'LAND', 'LOR', 'INC', 'DEC',
@@ -63,10 +63,10 @@ class Lexer(sly.Lexer):
         return t
 
     # Operadores
-    LT  = r'<'
     LE  = r'<='
-    GT  = r'>'
+    LT  = r'<'
     GE  = r'>='
+    GT  = r'>'
     EQ  = r'=='
     ASSIGN = r'='
     NEQ = r'!='
@@ -78,5 +78,30 @@ class Lexer(sly.Lexer):
     # Literales
     INTEGER_LITERAL = r'0|[1-9][0-9]*'
     FLOAT_LITERAL = r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'
-    STRING_LITERAL = r'"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*"'
-    CHAR_LITERAL = r"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))'"
+    STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'
+
+
+    CHAR_LITERAL = r"\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'"
+
+
+def tokenize(txt):
+    from rich.table import Table
+    from rich.console import Console
+
+    lex = Lexer()
+
+    table = Table(title="Tokens")
+    table.add_column("type")
+    table.add_column("value")
+    table.add_column("line", justify="right")
+
+    for tok in lex.tokenize(txt):
+        value = tok.value if isinstance(tok.value, str) else str(tok.value)
+        table.add_row(tok.type, value, str(tok.lineno))
+
+    console = Console()
+    console.print(table)
+
+
+if __name__ == "__main__":
+    pass
