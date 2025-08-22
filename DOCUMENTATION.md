@@ -60,7 +60,7 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 | ==      | EQ     | Igual             | `==`         |
 | !=      | NEQ    | Diferente         | `!=`         |
 | &&      | LAND   | AND logico        | `&&`         |
-| ||      | LOR    | OR logico         | `\|\|`       |
+| '||'    | LOR    | OR logico         | `\|\|`       |
 | ++      | INC    | Incremento        | `\+\+`       |
 | --      | DEC    | Decremento        | `--`         |
 | +       | PLUS   | Suma              | `\+`         |
