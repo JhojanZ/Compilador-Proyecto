@@ -25,7 +25,7 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
   
 ## Tabla de Palabras Reservadas
 
-| Palabra   | Token      | Función/Propósito                | Patrón Regex                |
+| Palabra   | Token      | Función/Propósito                | Patrón Regex |
 |-----------|------------|--------------------------|----------------------|
 | array     | ARRAY      | Declaración de tipo array        | `array` |
 | auto      | AUTO       | Inferencia de tipo               | `auto` |
@@ -45,9 +45,29 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 | while     | WHILE      | Bucle while                      | `while` |
 | do        | DO         | Bucle do-while                   | `do` |
 | print     | PRINT      | Sentencia de impresión           | `print` |
+| assign    | ASSIGN     | Operador de asignación           | `=` |
 
 
 ### Operadores
+
+
+| Operador| Token  | Función/Propósito | Patrón Regex |
+|---------|--------|-------------------|--------------|
+| <       | LT     | Menor que         | `<`          |
+| <=      | LE     | Menor o igual que | `<=`         |
+| >=      | GE     | Mayor o igual que | `>=`         |
+| >       | GT     | Mayor que         | `>`          |
+| ==      | EQ     | Igual             | `==`         |
+| !=      | NEQ    | Diferente         | `!=`         |
+| &&      | LAND   | AND logico        | `&&`         |
+| ||      | LOR    | OR logico         | `\|\|`       |
+| ++      | INC    | Incremento        | `\+\+`       |
+| --      | DEC    | Decremento        | `--`         |
+| +       | PLUS   | Suma              | `\+`         |
+| -       | MINUS  | Resta             | `-`          |  
+| *       | TIMES  | Multiplicacion    | `\*`         |
+| /       | DIVIDE | Division          | `/`          |
+| %       | MOD    | Modulo            | `%`          |
 
 - Aritméticos: `+`, `-`, `*`, `/`, `%`, `++`, `--`
 - Asignación: `=`
@@ -56,6 +76,13 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 
 
 ### Literales
+
+| Tipo     | Token          | Ejemplo             | Patrón Regex       |
+|----------|-------        -|---------------      |--------------------|
+| Entero   | INTEGER_LITERAL| 0, 42, 1234         | `0|[1-9][0-9]*`    |
+| Flotante | FLOAT_LITERAL  | 3.14, 0.001, 2.5e10 | `(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?`|
+| Cadena   | STRING_LITERAL | Hola, mundo!        | `\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"`|
+| Caracter | CHAR_LITERAL   | a, '\n, 0x41        | `\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'`|
 
 - Entero: `0`, `42`, `1234`
 - Flotante: `3.14`, `0.001`, `2.5e10`
@@ -67,8 +94,23 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 
 - Deben comenzar con una letra o guion bajo, seguidos de letras, dígitos o guiones bajos.
 
+| Tipo          | Token | Funcion/Proposito  | Patrón Regex            |
+|---------------|-------|--------------------|-------------------------|
+| Identificador | ID    | Nombres de var/fin | `[A-Za-z_][A-Za-z0-9_]*`|
 
 ### Símbolos
+
+| Simbolo | Token  | Función/Propósito    | Patrón Regex |
+|---------|--------|----------------------|--------------|
+| (       | LPAREN | Parentesis izquierdo | `\(`         |
+| )       | RPAREN | Parentesis derecho   | `\)`         |
+| {       | LBRACE | Llave izquierda      | `{`          |
+| }       | RBRACE | Llave derecha        | `}`          |
+| [       | LBRACK | Corchete izquierdo   | `\[`         |
+| ]       | RBRACK | Corchete derecho     | `\]`         |
+| ;       | SEMI   | Punto y coma         | `;`          |
+| :       | COLON  | Dos puntos           | `:`          |
+| ,       | COMMA  | Coma                 | `,`          |
 
 - Paréntesis: `(`, `)`
 - Corchetes: `[`, `]`
