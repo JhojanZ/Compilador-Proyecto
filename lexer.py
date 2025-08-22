@@ -3,6 +3,11 @@ import sly
 from errors import error
 
 class Lexer(sly.Lexer):
+    """
+    Analizador léxico para el lenguaje B-Minor usando SLY.
+    Define los tokens, palabras reservadas, operadores y literales reconocidos por el lenguaje.
+    """
+    # Conjunto de tokens reconocidos por el lexer
     tokens = {
         'ARRAY', 'AUTO', 'BOOLEAN', 'CHAR', 'ELSE', 'FALSE', 'FLOAT', 'FOR', 'FUNCTION',
         'IF', 'INTEGER', 'RETURN', 'STRING', 'TRUE', 'VOID', 'WHILE', 'ASSIGN', 'PRINT', 'DO',
@@ -16,19 +21,27 @@ class Lexer(sly.Lexer):
 
     
 
+    # Caracteres literales que se reconocen directamente
     literals = '+-*/%=()[]{};,:'
 
+    # Caracteres a ignorar (espacios, tabulaciones y retorno de carro)
     ignore = ' \t\r'
 
+    # Ignora comentarios estilo C++ (// ...)
     ignore_cppcomments = r'//.*'
 
-    #manejo de saltos de linea
+    # Manejo de saltos de línea para actualizar el número de línea
     @_(r'\n+')
     def ignore_newlines(self, t):
+        """
+        Ignora saltos de línea y actualiza el contador de líneas.
+        """
         self.lineno += t.value.count('\n')
 
-    #las palabras reservadas se guardan en un diccionario
-    # Palabras reservadas
+    # Diccionario de palabras reservadas del lenguaje.
+    # Las palabras reservadas se reconocen usando el mismo regex que los identificadores:
+    # REGEX: r'[A-Za-z_][A-Za-z0-9_]*'
+    # Si el valor coincide con una clave de este diccionario, se clasifica como palabra reservada.
     keywords = {
         'array': 'ARRAY',
         'auto': 'AUTO',
@@ -50,19 +63,21 @@ class Lexer(sly.Lexer):
         'print': 'PRINT'
     }
 
-    #identifica si una palabra es reservada del lenguaje o un identificador normal.
     # Identificadores y palabras reservadas
     @_(r'[A-Za-z_][A-Za-z0-9_]*')
     def ID(self, t):
-        # Si la palabra está en la lista de palabras reservadas se usara
+        """
+        Identifica si una palabra es reservada del lenguaje o un identificador normal.
+        Si la palabra está en la lista de palabras reservadas, asigna el tipo correspondiente.
+        Si no, la clasifica como identificador (ID).
+        """
         if t.value.lower() in self.keywords:
             t.type = self.keywords[t.value.lower()]
         else:
-            # Si no, es un identificador normal
             t.type = 'ID'
         return t
 
-    # Operadores
+    # Expresiones regulares para operadores
     LE  = r'<='
     LT  = r'<'
     GE  = r'>='
@@ -75,16 +90,19 @@ class Lexer(sly.Lexer):
     INC  = r'\+\+'
     DEC  = r'--'
 
-    # Literales
-    INTEGER_LITERAL = r'0|[1-9][0-9]*'
-    FLOAT_LITERAL = r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'
-    STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'
-
-
-    CHAR_LITERAL = r"\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'"
+    # Expresiones regulares para literales
+    INTEGER_LITERAL = r'0|[1-9][0-9]*'  # Números enteros
+    FLOAT_LITERAL = r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'  # Números flotantes
+    STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'  # Cadenas de texto
+    CHAR_LITERAL = r"\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'"  # Caracteres
 
 
 def tokenize(txt):
+    """
+    Función auxiliar para tokenizar un texto y mostrar los tokens en una tabla usando rich.
+    Args:
+        txt (str): Texto fuente a analizar léxicamente.
+    """
     from rich.table import Table
     from rich.console import Console
 
@@ -104,4 +122,5 @@ def tokenize(txt):
 
 
 if __name__ == "__main__":
+    # Punto de entrada principal (no realiza ninguna acción por defecto)
     pass
