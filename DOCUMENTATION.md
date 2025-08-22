@@ -60,7 +60,7 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 | ==      | EQ     | Igual             | `==`         |
 | !=      | NEQ    | Diferente         | `!=`         |
 | &&      | LAND   | AND logico        | `&&`         |
-| '||'    | LOR    | OR logico         | `\|\|`       |
+| ||    | LOR    | OR logico         | `\|\|`       |
 | ++      | INC    | Incremento        | `\+\+`       |
 | --      | DEC    | Decremento        | `--`         |
 | +       | PLUS   | Suma              | `\+`         |
@@ -77,12 +77,12 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 
 ### Literales
 
-| Tipo     | Token          | Ejemplo             | Patrón Regex                                              |
-|----------|----------------|---------------------|-----------------------------------------------------------|
-| Entero   | INTEGER_LITERAL| 0, 42, 1234         | `0|[1-9][0-9]*`                                           |
-| Flotante | FLOAT_LITERAL  | 3.14, 0.001, 2.5e10 | `(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?`     |
-| Cadena   | STRING_LITERAL | Hola, mundo!        | `\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"` |
-| Caracter | CHAR_LITERAL   | a, '\n, 0x41        | `\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'`  |
+| Tipo     | Token          | Ejemplo             | Patrón Regex                                           |
+|----------|----------------|---------------------|--------------------------------------------------------|
+| Entero   | INTEGER_LITERAL| 0, 42, 1234         | `0|[1-9][0-9]*`                                        |
+| Flotante | FLOAT_LITERAL  | 3.14, 0.001, 2.5e10 | `(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?`  |
+| Cadena   | STRING_LITERAL | Hola, mundo!        | `([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\` |
+| Caracter | CHAR_LITERAL   | a, '\n, 0x41        | `([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\`  |
 
 - Entero: `0`, `42`, `1234`
 - Flotante: `3.14`, `0.001`, `2.5e10`
