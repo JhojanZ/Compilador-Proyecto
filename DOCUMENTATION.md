@@ -21,30 +21,30 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 
 ### Palabras Reservadas
 
-- `array`, `auto`, `boolean`, `char`, `else`, `false`, `float`, `for`, `function`, `if`, `integer`, `return`, `string`, `true`, `void`, `while`, `do`, `print`
+- `array`, `auto`, `boolean`, `char`, `else`, `false`, `float`, `for`, `function`, `if`, `integer`, `return`, `string`, `true`, `void`, `while`, `do`, `print`, `assign`
   
 ## Tabla de Palabras Reservadas
 
 | Palabra   | Token      | Función/Propósito                | Patrón Regex                |
 |-----------|------------|--------------------------|----------------------|
-| array     | ARRAY      | Declaración de tipo array        | `[A-Za-z_][A-Za-z0-9_]*` |
-| auto      | AUTO       | Inferencia de tipo               | `[A-Za-z_][A-Za-z0-9_]*` |
-| boolean   | BOOLEAN    | Declaración de tipo booleano     | `[A-Za-z_][A-Za-z0-9_]*` |
-| char      | CHAR       | Declaración de tipo char         | `[A-Za-z_][A-Za-z0-9_]*` |
-| else      | ELSE       | Rama else en control de flujo    | `[A-Za-z_][A-Za-z0-9_]*` |
-| false     | FALSE      | Literal booleano falso           | `[A-Za-z_][A-Za-z0-9_]*` |
-| float     | FLOAT      | Declaración de tipo flotante     | `[A-Za-z_][A-Za-z0-9_]*` |
-| for       | FOR        | Bucle for                        | `[A-Za-z_][A-Za-z0-9_]*` |
-| function  | FUNCTION   | Declaración de función           | `[A-Za-z_][A-Za-z0-9_]*` |
-| if        | IF         | Rama if en control de flujo      | `[A-Za-z_][A-Za-z0-9_]*` |
-| integer   | INTEGER    | Declaración de tipo entero       | `[A-Za-z_][A-Za-z0-9_]*` |
-| return    | RETURN     | Sentencia de retorno             | `[A-Za-z_][A-Za-z0-9_]*` |
-| string    | STRING     | Declaración de tipo cadena       | `[A-Za-z_][A-Za-z0-9_]*` |
-| true      | TRUE       | Literal booleano verdadero       | `[A-Za-z_][A-Za-z0-9_]*` |
-| void      | VOID       | Declaración de tipo void         | `[A-Za-z_][A-Za-z0-9_]*` |
-| while     | WHILE      | Bucle while                      | `[A-Za-z_][A-Za-z0-9_]*` |
-| do        | DO         | Bucle do-while                   | `[A-Za-z_][A-Za-z0-9_]*` |
-| print     | PRINT      | Sentencia de impresión           | `[A-Za-z_][A-Za-z0-9_]*` |
+| array     | ARRAY      | Declaración de tipo array        | `array` |
+| auto      | AUTO       | Inferencia de tipo               | `auto` |
+| boolean   | BOOLEAN    | Declaración de tipo booleano     | `boolean` |
+| char      | CHAR       | Declaración de tipo char         | `char` |
+| else      | ELSE       | Rama else en control de flujo    | `else` |
+| false     | FALSE      | Literal booleano falso           | `false` |
+| float     | FLOAT      | Declaración de tipo flotante     | `float` |
+| for       | FOR        | Bucle for                        | `for` |
+| function  | FUNCTION   | Declaración de función           | `function` |
+| if        | IF         | Rama if en control de flujo      | `if` |
+| integer   | INTEGER    | Declaración de tipo entero       | `integer` |
+| return    | RETURN     | Sentencia de retorno             | `return` |
+| string    | STRING     | Declaración de tipo cadena       | `string` |
+| true      | TRUE       | Literal booleano verdadero       | `true` |
+| void      | VOID       | Declaración de tipo void         | `void` |
+| while     | WHILE      | Bucle while                      | `while` |
+| do        | DO         | Bucle do-while                   | `do` |
+| print     | PRINT      | Sentencia de impresión           | `print` |
 
 
 ### Operadores
