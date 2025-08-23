@@ -1,0 +1,4 @@
+string S;
+// un string
+S = "hola";
+print(S);

@@ -1,17 +1,17 @@
 """
-usage: bminor.py [-h] [-v] [--scan | --dot | --sym] [filename]
+uso: bminor.py [-h] [-v] [--scan | --dot | --sym] [filename]
 
-Compilador para B-Minor programas
+Compilador para programas B-Minor
 
-options:
-    -h, --help            Show this help message and exit
-    -v, --version         Show version information and exit
+opciones:
+    -h, --help            Muestra este mensaje de ayuda y sale
+    -v, --version         Muestra la información de versión y sale
 
 Opciones de formato:
-    --scan                Run the lexer and show tokens
-    --dot                 Generate a DOT file for the AST
-    --sym                 Show the symbol table
-    [filename]            The source file to compile
+    --scan                Ejecuta el lexer y muestra los tokens
+    --dot                 Genera un archivo DOT para el AST
+    --sym                 Muestra la tabla de símbolos
+    [filename]            El archivo fuente a compilar
 
 """
 
@@ -59,10 +59,25 @@ def main():
         usage()
         return  
 
+    def check_invalid_args():
+        valid_options = {"--scan", "--dot", "--sym", "-h", "--help", "-v", "--version"}
+        args = sys.argv[1:]
+        for arg in args:
+            if arg.startswith("-") and arg not in valid_options:
+                error(f"Argumento no válido: {arg}")
+                return
+
+    check_invalid_args()
+
     args = parse_args()
 
     if args.filename:
         fname = args.filename
+        # Validar extensión .bminor
+        if not fname.endswith('.bminor'):
+            error(f"Solo se permiten archivos con extensión .bminor: {fname}")
+            usage()
+            return
 
         with open(fname, encoding="utf-8") as file:
             source = file.read()

@@ -1,0 +1,5 @@
+boolean flag;
+flag = true;
+if (flag) {
+    print("flag is true");
+}

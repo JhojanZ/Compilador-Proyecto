@@ -1,0 +1,6 @@
+integer x
+/ hola
+if (x < 10) {
+    print("ok");
+    x++
+}

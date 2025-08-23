@@ -83,14 +83,20 @@ class Lexer(sly.Lexer):
             t.type = 'ID'
         return t
 
-    # ...existing code...
 
-    # Puedes agregar reglas similares para otros tokens inválidos si lo deseas
-
-    # ...existing code...
-
-    # ...existing code...
+    @_(r'\n+')
+    def ignore_newline(self, t):
+        self.lineno = t.value.count('\n')
     
+    @_(r'//.*')
+    def ignore_cppcomment(self, t):
+        pass
+    
+    @_(r'/\*(.|\n)*\*/')
+    def ignore_comment(self, t):
+        self.lineno = t.value.count('\n')
+    
+
 
 
     # Expresiones regulares para operadores
@@ -107,10 +113,10 @@ class Lexer(sly.Lexer):
     DEC  = r'--'
 
     # Expresiones regulares para literales
-    INTEGER_LITERAL = r'0|[1-9][0-9]*'  # Números enteros
     FLOAT_LITERAL = r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'  # Números flotantes
-    STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'  # Cadenas de texto
+    INTEGER_LITERAL = r'0|[1-9][0-9]*'  # Números enteros
     CHAR_LITERAL = r"\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'"  # Caracteres
+    STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'  # Cadenas de texto
 
 
 def tokenize(txt):
