@@ -211,6 +211,65 @@ Tambien puedes ver la tabla de del parser si le agregas el argumento --show-tabl
 python run_tests.py --show-table
 ```
 ---
+## Casos de Prueba
+
+Los casos de prueba se implementan como archivos con extensión `.bminor` ubicados en la carpeta `Test/`. Cada archivo contiene fragmentos de código diseñados para verificar el correcto funcionamiento del analizador léxico (lexer) del lenguaje B-Minor.  
+En esta etapa, el objetivo es **verificar la correctitud de los tokens reconocidos**, sin importar aún el orden ni la validez sintáctica, lo cual se abordará posteriormente en la fase del parser.
+
+Los casos de prueba abarcan:
+
+### Tokens válidos:
+ Verifican que el lexer reconoce correctamente identificadores, palabras reservadas, operadores, literales numéricos, de cadena y de carácter, y símbolos especiales.\
+    Ejemplo:\
+      string s = "hola";
+      print(s);
+
+---
+
+### Comentarios:  
+  Confirman que los comentarios de una y múltiples líneas son ignorados y no generan tokens.\
+Ejemplo:\
+
+  // comentario en una línea
+    x = 5; /* comentario múltiple */
+
+### Errores léxicos específicos:
+  Con las nuevas reglas se detectan entradas inválidas y se reportan con mensajes más claros:
+
+  * INVALID_FLOAT: números de punto flotante mal formados.
+  * INVALID_STRING: cadenas sin cierre de comillas.
+  * INVALID_CHAR: caracteres inválidos o sin cierre correcto.\
+    Ejemplos: \
+      1.23.45      // número inválido
+      "hola        // cadena sin cierre
+      'a           // carácter sin cierre
+
+### Casos límite: 
+Validan el comportamiento del lexer en archivos vacíos, líneas con solo espacios o saltos de línea, identificadores largos o números grandes.\
+Ejemplo:\
+  cantidad_estudiantes_matriculados_2025 = 32000;
+
+### Casos mixtos: 
+Simulan fragmentos de programas que mezclan distintos tipos de tokens. En esta fase, lo importante es que todos los tokens se reconozcan bien, sin importar el orden o si la estructura tiene sentido para el parser.\
+Ejemplo:\
+  function suma(a, b) {
+      return a + b;
+  }
+
+
+### Explicaciones
+
+El analizador léxico se centra únicamente en dividir la entrada en tokens válidos o reportar tokens inválidos. Con los cambios recientes, ahora distingue de forma más precisa entre errores de números flotantes, cadenas y caracteres, evitando que secuencias inválidas se confundan con tokens válidos.
+
+Los casos de prueba de tokens válidos garantizan que las reglas básicas siguen funcionando. Los de comentarios verifican que estos no interfieran en la generación de tokens. Los casos de errores léxicos específicos validan el nuevo comportamiento del lexer al detectar entradas incorrectas con mensajes claros. Los casos límite comprueban que el sistema es estable incluso en situaciones poco comunes. Finalmente, los casos mixtos permiten asegurar que el lexer maneje una variedad de tokens en un mismo archivo.
+
+### Justificación
+
+Estos casos de prueba son necesarios porque aseguran que el analizador léxico cumple con su objetivo principal: reconocer los tokens válidos y detectar los inválidos de manera confiable. Aún no se evalúa la validez del orden de tokens o la estructura del programa, ya que eso se abordará en la etapa de análisis sintáctico (parser).
+
+Con los casos válidos confirmamos la capacidad de reconocer correctamente los elementos del lenguaje. Con los errores léxicos específicos garantizamos que el sistema es capaz de detectar secuencias inválidas y dar retroalimentación clara al usuario. Los casos límite y mixtos validan la robustez y consistencia del lexer frente a entradas diversas.
+
+---
 
 ## Capturas de pantalla de la ejecucion de las pruebas
 
