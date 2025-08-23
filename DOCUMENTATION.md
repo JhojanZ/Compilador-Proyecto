@@ -214,7 +214,11 @@ python run_tests.py --show-table
 
 ## Capturas de pantalla de la ejecucion de las pruebas
 
-
+![Imagen de WhatsApp 2025-08-22 a las 21 38 01_b698fe69](https://github.com/user-attachments/assets/b3cf8b9c-a2b4-4f9a-967d-bf4952d3909e)
+![Imagen de WhatsApp 2025-08-22 a las 21 38 47_fc7374dc](https://github.com/user-attachments/assets/312d8d7f-0141-4b20-87f3-7cf101033e91)
+![Imagen de WhatsApp 2025-08-22 a las 21 44 24_5d731d5f](https://github.com/user-attachments/assets/e5b6e6a5-ab0b-4960-b315-96a2d446bf20)
+![Imagen de WhatsApp 2025-08-22 a las 21 44 35_d1101e9f](https://github.com/user-attachments/assets/214ad779-b364-46f6-8073-793fccf7e60f)
+![Imagen de WhatsApp 2025-08-22 a las 21 46 14_a3dda8d3](https://github.com/user-attachments/assets/fce6f527-429f-4f59-b6eb-b36a2b5ad54f)
 
 ## Dependencias
 
