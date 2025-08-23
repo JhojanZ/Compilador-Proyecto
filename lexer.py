@@ -113,10 +113,27 @@ class Lexer(sly.Lexer):
     DEC  = r'--'
 
     # Expresiones regulares para literales
-    FLOAT_LITERAL = r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'  # Números flotantes
+    FLOAT_LITERAL = r'(0\.¿[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?'  # Números flotantes
     INTEGER_LITERAL = r'0|[1-9][0-9]*'  # Números enteros
     CHAR_LITERAL = r"\'([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))\'"  # Caracteres
     STRING_LITERAL = r'\"([\x20-\x7E]|\\([abefnrtv\\’\”]|0x[0-9a-fA-F]{2}))*\"'  # Cadenas de texto
+
+    @_(r'(0\.[0-9]+)|([1-9][0-9]*\.[0-9]+)([eE][+-]?[0-9]+)?')
+    def INVALID_FLOAT(self, t):
+        error(f"Número de punto flotante inválido: {t.value} en la línea {t.lineno}", t.lineno)
+        # No retorna el token para que no sea procesado como válido
+
+    @_(r'\"[^\"]*\n?')
+    def INVALID_STRING(self, t):
+        error(f"Cadena de texto no válida (sin cierre de comillas): {t.value}", t.lineno)
+        # No retorna el token para que no sea procesado como válido
+
+ 
+
+    @_(r"'[^']*\n?")
+    def INVALID_CHAR(self, t):
+        error(f"Literal de carácter no válido (sin cierre de comillas): {t.value}", t.lineno)
+        # No retorna el token para que no sea procesado como válido
 
 
 def tokenize(txt):

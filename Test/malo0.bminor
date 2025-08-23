@@ -1,6 +1,5 @@
 integer x
-/ hola
 if (x < 10) {
-    print("ok");
+    print('ok');
     x++
 }

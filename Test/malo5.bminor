@@ -1,9 +1,4 @@
-for (integer i = 0; i < 5 i++) {
+for (integer i = 1ee0; i < 5 i++) {
     print(i);
 }
-/*
-UNA 
-demostracion
-del
-for 
-:D
+// HOLA

@@ -234,4 +234,6 @@ python run_tests.py --show-table
 
 ## Autores
 
-- 
+- Jhojan Felipe Sanchez Zapata
+- Jonathan Muñoz Jimenez
+- Valentina velasquez gil

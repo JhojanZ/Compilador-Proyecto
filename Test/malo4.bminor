@@ -1,4 +1,4 @@
 string s;
 / un string
-s = "hola";
+s = hola";
 print(s);
