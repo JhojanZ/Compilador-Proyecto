@@ -123,11 +123,13 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
 
 
 ### b-minor.py
+Es el archivo donde se ejecutara nuestro archivos de bminor
 
+- Reconoce unicamente archivos con la extension .bminor
 - Maneja los argumentos de línea de comandos usando `argparse`.
-- Permite la interaccion con el sistema `sys.exit`.
+- Permite argumentos adicionales con el sistema `sys.exit`.
 - Imprime mensajes con formato y color en consola `rich/print`.
-- Funcion que ejecuta el analizador lexico sobr el codigo fuente `tokenize/lexer`.
+- Funcion que ejecuta el analizador lexico sobre el codigo fuente `tokenize/lexer`.
   
 - Soporta opciones:
   - Mostrar un mensaje de uso cuando el usuario no pasa argumentos validos o          cuando se requiere ayuda adicional `usage(exit_code=1)`, finaliza el programa     con el codigo de salida `exit_code`, 1=error.
@@ -174,16 +176,8 @@ Este proyecto es un compilador para el lenguaje de programación B-Minor. Incluy
   - `reset_errors()`: Reinicia el contador de errores.
   - `error`: Imprime errores en consola y los cuenta
 - Variables globales: 
-- Instancia de console usada para imprimir mensajes formateados`console`
-- `_errors_detected`: Guarda el numero de rrroes acumulados
-
-### test.py
-
-- Importa el lexer y ejecuta `tokenize()` en un fragmento de código de ejemplo en B-Minor.
--  Clase definida en `Lexer` que implementa el analizador lexico
--   `if_name__== "__main__":`: Garantiza que este archivo se ejecute solo si es        llamado directamente desde la terminal
--   Evita que se ejecute al importarlo como modulo
--   Define la clase del codigo de prueba `text`
+    - Instancia de console usada para imprimir mensajes formateados`console`
+    - `_errors_detected`: Guarda el numero de erroes acumulados
 
 
 ## Ejemplo de Código B-Minor
@@ -194,8 +188,6 @@ if (x <= 10) {
   x++;
 }
 ```
-- Variables:
-  -X: Variable    
 ---
 
 
@@ -208,17 +200,22 @@ python b-minor.py --scan sieve.bminor
 ```
 
 ### Ejecutar Prueba
+Ejecuta el archivo "run_tests", y probara todos los archivos en la carpeta Test.
+
 
 ```powershell
-python test.py
+python run_tests.py
 ```
-
+Tambien puedes ver la tabla de del parser si le agregas el argumento --show-table
+```powershell
+python run_tests.py --show-table
+```
 ---
 
 
 ## Dependencias
 
-- Python 3.x
+- Python 3.13.7
 - SLY (`pip install sly`)
 - Rich (`pip install rich`)
 
