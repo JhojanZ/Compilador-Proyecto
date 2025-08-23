@@ -1,8 +1,16 @@
 import sly
 
-from errors import error
+from errors import error, get_error_count
 
 class Lexer(sly.Lexer):
+    # ...existing code...
+
+    # Regla para detectar identificadores inválidos (por ejemplo, que empiezan con dígito)
+    @_(r'[0-9]+[A-Za-z_][A-Za-z0-9_]*')
+    def INVALID_ID(self, t):
+        error(f"Identificador inválido: '{t.value}' en la línea {t.lineno}", t.lineno)
+        # No retorna el token para que no sea procesado como válido
+
     """
     Analizador léxico para el lenguaje B-Minor usando SLY.
     Define los tokens, palabras reservadas, operadores y literales reconocidos por el lenguaje.
@@ -29,6 +37,7 @@ class Lexer(sly.Lexer):
 
     # Ignora comentarios estilo C++ (// ...)
     ignore_cppcomments = r'//.*'
+    ignore_cpplongcomment = r'/\*[\s\S]*?\*/'
 
     # Manejo de saltos de línea para actualizar el número de línea
     @_(r'\n+')
@@ -38,10 +47,7 @@ class Lexer(sly.Lexer):
         """
         self.lineno += t.value.count('\n')
 
-    # Diccionario de palabras reservadas del lenguaje.
-    # Las palabras reservadas se reconocen usando el mismo regex que los identificadores:
-    # REGEX: r'[A-Za-z_][A-Za-z0-9_]*'
-    # Si el valor coincide con una clave de este diccionario, se clasifica como palabra reservada.
+    # Diccionario de palabras reservadas del lenguaje
     keywords = {
         'array': 'ARRAY',
         'auto': 'AUTO',
@@ -76,6 +82,16 @@ class Lexer(sly.Lexer):
         else:
             t.type = 'ID'
         return t
+
+    # ...existing code...
+
+    # Puedes agregar reglas similares para otros tokens inválidos si lo deseas
+
+    # ...existing code...
+
+    # ...existing code...
+    
+
 
     # Expresiones regulares para operadores
     LE  = r'<='
@@ -118,7 +134,9 @@ def tokenize(txt):
         table.add_row(tok.type, value, str(tok.lineno))
 
     console = Console()
-    console.print(table)
+    if get_error_count() == 0:
+        console.print(table)
+
 
 
 if __name__ == "__main__":

@@ -22,11 +22,14 @@ import sys
 
 from rich import print
 from lexer import tokenize
+from errors import error
 
+# Muestra un mensaje de ayuda cuando no se proporciona ningun argumento extra
 def usage(exit_code=1):
-    print("[Blue]Usage: bminor.py --option filename[/blue]", file=sys.stderr)
+    print("[blue]Usage: bminor.py --option filename[/blue]", file=sys.stderr)
     sys.exit(exit_code)
 
+# Función para analizar los argumentos de la línea de comandos
 def parse_args():
     cli = argparse.ArgumentParser(
         prog="bminor.py",
@@ -46,9 +49,15 @@ def parse_args():
 
     return cli.parse_args()
 
+# Función principal
 def main():
     if(len(sys.argv) == 1):
         usage()
+
+    if(len(sys.argv) > 3):
+        error("Cantidad de argumentos no válida.")
+        usage()
+        return  
 
     args = parse_args()
 
