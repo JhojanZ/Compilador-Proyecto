@@ -212,6 +212,9 @@ python run_tests.py --show-table
 ```
 ---
 
+## Capturas de pantalla de la ejecucion de las pruebas
+
+
 
 ## Dependencias
 
