@@ -221,17 +221,20 @@ Los casos de prueba abarcan:
 ### Tokens válidos:
  Verifican que el lexer reconoce correctamente identificadores, palabras reservadas, operadores, literales numéricos, de cadena y de carácter, y símbolos especiales.\
     Ejemplo:\
-      string s = "hola";
-      print(s);
-
+    ```bminor
+    
+        string s = "hola";
+        print(s);
+    
 ---
 
 ### Comentarios:  
   Confirman que los comentarios de una y múltiples líneas son ignorados y no generan tokens.\
 Ejemplo:\
-
+```bminor
   // comentario en una línea
     x = 5; /* comentario múltiple */
+```
 
 ### Errores léxicos específicos:
   Con las nuevas reglas se detectan entradas inválidas y se reportan con mensajes más claros:
@@ -240,9 +243,11 @@ Ejemplo:\
   * INVALID_STRING: cadenas sin cierre de comillas.
   * INVALID_CHAR: caracteres inválidos o sin cierre correcto.\
     Ejemplos: \
+    ```bminor
       1.23.45      // número inválido
       "hola        // cadena sin cierre
       'a           // carácter sin cierre
+    ```
 
 ### Casos límite: 
 Validan el comportamiento del lexer en archivos vacíos, líneas con solo espacios o saltos de línea, identificadores largos o números grandes.\
@@ -252,9 +257,11 @@ Ejemplo:\
 ### Casos mixtos: 
 Simulan fragmentos de programas que mezclan distintos tipos de tokens. En esta fase, lo importante es que todos los tokens se reconozcan bien, sin importar el orden o si la estructura tiene sentido para el parser.\
 Ejemplo:\
+```bminor
   function suma(a, b) {
       return a + b;
   }
+```
 
 
 ### Explicaciones
