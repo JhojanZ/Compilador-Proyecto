@@ -35,31 +35,41 @@ class Parser(sly.Parser):
 	def decl_list(self, p):
 		return [ ]
 
+
 	@_("ID ':' type_simple ';'")
 	def decl(self, p):
-		...
+		# Declaración sin inicialización
+		return BinOper('decl', Literal(p.ID), Literal(p.type_simple))
+
 
 	@_("ID ':' type_array_sized ';'")
 	def decl(self, p):
-		...
+		# Declaración de arreglo sin inicialización
+		return BinOper('decl_array', Literal(p.ID), Literal(p.type_array_sized))
+
 
 	@_("ID ':' type_func ';'")
 	def decl(self, p):
-		...
+		# Declaración de función sin inicialización
+		return BinOper('decl_func', Literal(p.ID), Literal(p.type_func))
+
 
 	@_("decl_init")
 	def decl(self, p):
-		...
+		# Inicialización delegada
+		return p.decl_init
 
-	@_("ID ':' type_simple '=' expr ';'")
+
+	@_("ID ':' type_simple ASSIGN expr ';'")
+	def decl_init(self, p):
+		# Declaración con inicialización
+		return BinOper('decl_init', Literal(p.ID), p.expr)
+
+	@_("ID ':' type_array_sized ASSIGN '{' opt_expr_list '}' ';'")
 	def decl_init(self, p):
 		...
 
-	@_("ID ':' type_array_sized '=' '{' opt_expr_list '}' ';'")
-	def decl_init(self, p):
-		...
-
-	@_("ID ':' type_func '=' '{' opt_stmt_list '}'")
+	@_("ID ':' type_func ASSIGN '{' opt_stmt_list '}'")
 	def decl_init(self, p):
 		...
 	
@@ -147,7 +157,7 @@ class Parser(sly.Parser):
 	def block_stmt(self, p):
 		...
 	
-	# Expressions
+	# Expressions <-- me
 	
 	@_("empty")
 	def opt_expr_list(self, p):
@@ -178,7 +188,7 @@ class Parser(sly.Parser):
 	def expr(self, p):
 		...
 
-	@_("lval '=' expr1")
+	@_("lval ASSIGN expr1")
 	def expr1(self, p):
 		...
 		
@@ -261,31 +271,31 @@ class Parser(sly.Parser):
 
 	@_("expr9 INC")
 	def expr9(self, p):
-		...
+		return UnaryOper("++", p.expr9)
 		
 	@_("expr9 DEC")
 	def expr9(self, p):
-		...
+		return UnaryOper("--", p.expr9)
 		
 	@_("group")
 	def expr9(self, p):
-		...
+		return p.group
 		
 	@_("'(' expr ')'")
 	def group(self, p):
-		...
+		return p.expr
 		
 	@_("ID '(' opt_expr_list ')'")
 	def group(self, p):
-		...
+		return BinOper("call", p.ID, p.opt_expr_list)
 
 	@_("ID index")
 	def group(self, p):
-		...
+		return BinOper("index", p.ID, p.index)
 	
 	@_("factor")
 	def group(self, p):
-		...
+		return p.factor
 		
 	@_("'[' expr ']'")
 	def index(self, p):
@@ -297,7 +307,7 @@ class Parser(sly.Parser):
 
 	@_("INTEGER_LITERAL")
 	def factor(self, p):
-		return _L(Integer(p.INTEGER_LITERAL), p.lineno)
+		return _L(Integer(int(p.INTEGER_LITERAL)), p.lineno)
 
 	@_("FLOAT_LITERAL")
 	def factor(self, p):
