@@ -110,8 +110,8 @@ Rule 105   empty -> <empty>
 Unused terminals:
 
     WHILE
-    AUTO
     DO
+    AUTO
 
 Terminals, with rules where they appear:
 

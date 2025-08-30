@@ -86,12 +86,13 @@ def main():
         with open(fname, encoding="utf-8") as file:
             source = file.read()
         
+        # TO DO: separa los scaneos con sus argumenotos propios como el arbol y el png
         if args.scan:
             flex = fname.split(".")[0] + ".lex"
             tokenize(source)
 
             program_ast = parse(source)
-            print_astt(program_ast)
+            program_ast.pretty()
 
             from ast_to_png import ast_to_graph
             import os
