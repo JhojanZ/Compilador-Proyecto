@@ -8,9 +8,9 @@ Rule 4     decl -> decl_init
 Rule 5     decl -> ID : type_func ;
 Rule 6     decl -> ID : type_array_sized ;
 Rule 7     decl -> ID : type_simple ;
-Rule 8     decl_init -> ID : type_func = { opt_stmt_list }
-Rule 9     decl_init -> ID : type_array_sized = { opt_expr_list } ;
-Rule 10    decl_init -> ID : type_simple = expr ;
+Rule 8     decl_init -> ID : type_func ASSIGN { opt_stmt_list }
+Rule 9     decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ;
+Rule 10    decl_init -> ID : type_simple ASSIGN expr ;
 Rule 11    opt_stmt_list -> empty
 Rule 12    opt_stmt_list -> stmt_list
 Rule 13    stmt_list -> stmt
@@ -45,7 +45,7 @@ Rule 41    opt_expr -> expr
 Rule 42    opt_expr -> empty
 Rule 43    expr -> expr1
 Rule 44    expr1 -> expr2
-Rule 45    expr1 -> lval = expr1
+Rule 45    expr1 -> lval ASSIGN expr1
 Rule 46    lval -> ID index
 Rule 47    lval -> ID
 Rule 48    expr2 -> expr3
@@ -109,10 +109,9 @@ Rule 105   empty -> <empty>
 
 Unused terminals:
 
-    AUTO
     WHILE
-    ASSIGN
     DO
+    AUTO
 
 Terminals, with rules where they appear:
 
@@ -127,9 +126,8 @@ Terminals, with rules where they appear:
 /                    : 64
 :                    : 5 6 7 8 9 10 102 103 104
 ;                    : 5 6 7 9 10 26 26 29 34 35
-=                    : 8 9 10 45
 ARRAY                : 92 93 94 95
-ASSIGN               : 
+ASSIGN               : 8 9 10 45
 AUTO                 : 
 BOOLEAN              : 89
 CHAR                 : 88
@@ -228,9 +226,9 @@ state 0
     (5) decl -> . ID : type_func ;
     (6) decl -> . ID : type_array_sized ;
     (7) decl -> . ID : type_simple ;
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     $end            reduce using rule 105 (empty -> .)
     ID              shift and go to state 6
 
@@ -267,9 +265,9 @@ state 4
     (5) decl -> . ID : type_func ;
     (6) decl -> . ID : type_array_sized ;
     (7) decl -> . ID : type_simple ;
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     $end            reduce using rule 105 (empty -> .)
     ID              shift and go to state 6
 
@@ -306,9 +304,9 @@ state 6
     (5) decl -> ID . : type_func ;
     (6) decl -> ID . : type_array_sized ;
     (7) decl -> ID . : type_simple ;
-    (8) decl_init -> ID . : type_func = { opt_stmt_list }
-    (9) decl_init -> ID . : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> ID . : type_simple = expr ;
+    (8) decl_init -> ID . : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> ID . : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> ID . : type_simple ASSIGN expr ;
     :               shift and go to state 8
 
 
@@ -323,9 +321,9 @@ state 8
     (5) decl -> ID : . type_func ;
     (6) decl -> ID : . type_array_sized ;
     (7) decl -> ID : . type_simple ;
-    (8) decl_init -> ID : . type_func = { opt_stmt_list }
-    (9) decl_init -> ID : . type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> ID : . type_simple = expr ;
+    (8) decl_init -> ID : . type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> ID : . type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> ID : . type_simple ASSIGN expr ;
     (96) type_func -> . FUNCTION type_array_sized ( opt_param_list )
     (97) type_func -> . FUNCTION type_simple ( opt_param_list )
     (94) type_array_sized -> . ARRAY index type_array_sized
@@ -352,25 +350,25 @@ state 8
 state 9
 
     (5) decl -> ID : type_func . ;
-    (8) decl_init -> ID : type_func . = { opt_stmt_list }
+    (8) decl_init -> ID : type_func . ASSIGN { opt_stmt_list }
     ;               shift and go to state 20
-    =               shift and go to state 21
+    ASSIGN          shift and go to state 21
 
 
 state 10
 
     (6) decl -> ID : type_array_sized . ;
-    (9) decl_init -> ID : type_array_sized . = { opt_expr_list } ;
+    (9) decl_init -> ID : type_array_sized . ASSIGN { opt_expr_list } ;
     ;               shift and go to state 22
-    =               shift and go to state 23
+    ASSIGN          shift and go to state 23
 
 
 state 11
 
     (7) decl -> ID : type_simple . ;
-    (10) decl_init -> ID : type_simple . = expr ;
+    (10) decl_init -> ID : type_simple . ASSIGN expr ;
     ;               shift and go to state 24
-    =               shift and go to state 25
+    ASSIGN          shift and go to state 25
 
 
 state 12
@@ -409,7 +407,7 @@ state 14
 
     (86) type_simple -> VOID .
     ;               reduce using rule 86 (type_simple -> VOID .)
-    =               reduce using rule 86 (type_simple -> VOID .)
+    ASSIGN          reduce using rule 86 (type_simple -> VOID .)
     (               reduce using rule 86 (type_simple -> VOID .)
     ,               reduce using rule 86 (type_simple -> VOID .)
     )               reduce using rule 86 (type_simple -> VOID .)
@@ -419,7 +417,7 @@ state 15
 
     (87) type_simple -> STRING .
     ;               reduce using rule 87 (type_simple -> STRING .)
-    =               reduce using rule 87 (type_simple -> STRING .)
+    ASSIGN          reduce using rule 87 (type_simple -> STRING .)
     (               reduce using rule 87 (type_simple -> STRING .)
     ,               reduce using rule 87 (type_simple -> STRING .)
     )               reduce using rule 87 (type_simple -> STRING .)
@@ -429,7 +427,7 @@ state 16
 
     (88) type_simple -> CHAR .
     ;               reduce using rule 88 (type_simple -> CHAR .)
-    =               reduce using rule 88 (type_simple -> CHAR .)
+    ASSIGN          reduce using rule 88 (type_simple -> CHAR .)
     (               reduce using rule 88 (type_simple -> CHAR .)
     ,               reduce using rule 88 (type_simple -> CHAR .)
     )               reduce using rule 88 (type_simple -> CHAR .)
@@ -439,7 +437,7 @@ state 17
 
     (89) type_simple -> BOOLEAN .
     ;               reduce using rule 89 (type_simple -> BOOLEAN .)
-    =               reduce using rule 89 (type_simple -> BOOLEAN .)
+    ASSIGN          reduce using rule 89 (type_simple -> BOOLEAN .)
     (               reduce using rule 89 (type_simple -> BOOLEAN .)
     ,               reduce using rule 89 (type_simple -> BOOLEAN .)
     )               reduce using rule 89 (type_simple -> BOOLEAN .)
@@ -449,7 +447,7 @@ state 18
 
     (90) type_simple -> FLOAT .
     ;               reduce using rule 90 (type_simple -> FLOAT .)
-    =               reduce using rule 90 (type_simple -> FLOAT .)
+    ASSIGN          reduce using rule 90 (type_simple -> FLOAT .)
     (               reduce using rule 90 (type_simple -> FLOAT .)
     ,               reduce using rule 90 (type_simple -> FLOAT .)
     )               reduce using rule 90 (type_simple -> FLOAT .)
@@ -459,7 +457,7 @@ state 19
 
     (91) type_simple -> INTEGER .
     ;               reduce using rule 91 (type_simple -> INTEGER .)
-    =               reduce using rule 91 (type_simple -> INTEGER .)
+    ASSIGN          reduce using rule 91 (type_simple -> INTEGER .)
     (               reduce using rule 91 (type_simple -> INTEGER .)
     ,               reduce using rule 91 (type_simple -> INTEGER .)
     )               reduce using rule 91 (type_simple -> INTEGER .)
@@ -490,7 +488,7 @@ state 20
 
 state 21
 
-    (8) decl_init -> ID : type_func = . { opt_stmt_list }
+    (8) decl_init -> ID : type_func ASSIGN . { opt_stmt_list }
     {               shift and go to state 30
 
 
@@ -519,7 +517,7 @@ state 22
 
 state 23
 
-    (9) decl_init -> ID : type_array_sized = . { opt_expr_list } ;
+    (9) decl_init -> ID : type_array_sized ASSIGN . { opt_expr_list } ;
     {               shift and go to state 31
 
 
@@ -548,10 +546,10 @@ state 24
 
 state 25
 
-    (10) decl_init -> ID : type_simple = . expr ;
+    (10) decl_init -> ID : type_simple ASSIGN . expr ;
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -656,7 +654,7 @@ state 29
     (78) index -> [ . expr ]
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -723,7 +721,7 @@ state 29
 
 state 30
 
-    (8) decl_init -> ID : type_func = { . opt_stmt_list }
+    (8) decl_init -> ID : type_func ASSIGN { . opt_stmt_list }
     (11) opt_stmt_list -> . empty
     (12) opt_stmt_list -> . stmt_list
     (105) empty -> .
@@ -757,10 +755,10 @@ state 30
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -851,7 +849,7 @@ state 30
 
 state 31
 
-    (9) decl_init -> ID : type_array_sized = { . opt_expr_list } ;
+    (9) decl_init -> ID : type_array_sized ASSIGN { . opt_expr_list } ;
     (37) opt_expr_list -> . expr_list
     (38) opt_expr_list -> . empty
     (39) expr_list -> . expr
@@ -859,7 +857,7 @@ state 31
     (105) empty -> .
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -936,7 +934,7 @@ state 32
     (76) group -> ID . ( opt_expr_list )
     (85) factor -> ID .
     (78) index -> . [ expr ]
-    =               reduce using rule 47 (lval -> ID .)
+    ASSIGN          reduce using rule 47 (lval -> ID .)
     (               shift and go to state 89
     DEC             reduce using rule 85 (factor -> ID .)
     INC             reduce using rule 85 (factor -> ID .)
@@ -965,7 +963,7 @@ state 32
 
 state 33
 
-    (10) decl_init -> ID : type_simple = expr . ;
+    (10) decl_init -> ID : type_simple ASSIGN expr . ;
     ;               shift and go to state 90
 
 
@@ -993,8 +991,8 @@ state 35
 
 state 36
 
-    (45) expr1 -> lval . = expr1
-    =               shift and go to state 92
+    (45) expr1 -> lval . ASSIGN expr1
+    ASSIGN          shift and go to state 92
 
 
 state 37
@@ -1288,7 +1286,7 @@ state 48
     (77) group -> ( . expr )
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -1551,7 +1549,7 @@ state 57
 
     (94) type_array_sized -> ARRAY index type_array_sized .
     ;               reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
-    =               reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
+    ASSIGN          reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
     (               reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
     ,               reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
     )               reduce using rule 94 (type_array_sized -> ARRAY index type_array_sized .)
@@ -1561,7 +1559,7 @@ state 58
 
     (95) type_array_sized -> ARRAY index type_simple .
     ;               reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
-    =               reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
+    ASSIGN          reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
     (               reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
     ,               reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
     )               reduce using rule 95 (type_array_sized -> ARRAY index type_simple .)
@@ -1578,9 +1576,9 @@ state 60
     (5) decl -> ID . : type_func ;
     (6) decl -> ID . : type_array_sized ;
     (7) decl -> ID . : type_simple ;
-    (8) decl_init -> ID . : type_func = { opt_stmt_list }
-    (9) decl_init -> ID . : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> ID . : type_simple = expr ;
+    (8) decl_init -> ID . : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> ID . : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> ID . : type_simple ASSIGN expr ;
     (46) lval -> ID . index
     (47) lval -> ID .
     (75) group -> ID . index
@@ -1588,7 +1586,7 @@ state 60
     (85) factor -> ID .
     (78) index -> . [ expr ]
     :               shift and go to state 8
-    =               reduce using rule 47 (lval -> ID .)
+    ASSIGN          reduce using rule 47 (lval -> ID .)
     (               shift and go to state 89
     DEC             reduce using rule 85 (factor -> ID .)
     INC             reduce using rule 85 (factor -> ID .)
@@ -1644,10 +1642,10 @@ state 61
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -1735,7 +1733,7 @@ state 61
 
 state 62
 
-    (8) decl_init -> ID : type_func = { opt_stmt_list . }
+    (8) decl_init -> ID : type_func ASSIGN { opt_stmt_list . }
     }               shift and go to state 120
 
 
@@ -1785,10 +1783,10 @@ state 65
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2149,10 +2147,10 @@ state 78
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2269,10 +2267,10 @@ state 79
     (24) if_stmt_open -> . if_cond closed_stmt ELSE if_stmt_open
     (25) if_stmt_open -> . if_cond stmt
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2365,7 +2363,7 @@ state 80
     (43) expr -> . expr1
     (105) empty -> .
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2443,7 +2441,7 @@ state 81
     (105) empty -> .
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2526,7 +2524,7 @@ state 83
 
 state 84
 
-    (9) decl_init -> ID : type_array_sized = { opt_expr_list . } ;
+    (9) decl_init -> ID : type_array_sized ASSIGN { opt_expr_list . } ;
     }               shift and go to state 133
 
 
@@ -2560,7 +2558,7 @@ state 88
 
     (46) lval -> ID index .
     (75) group -> ID index .
-    =               reduce using rule 46 (lval -> ID index .)
+    ASSIGN          reduce using rule 46 (lval -> ID index .)
     DEC             reduce using rule 75 (group -> ID index .)
     INC             reduce using rule 75 (group -> ID index .)
     ^               reduce using rule 75 (group -> ID index .)
@@ -2594,7 +2592,7 @@ state 89
     (105) empty -> .
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -2665,25 +2663,25 @@ state 89
 
 state 90
 
-    (10) decl_init -> ID : type_simple = expr ; .
-    ID              reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    $end            reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    {               reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    RETURN          reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    PRINT           reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    FOR             reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    IF              reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    !               reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    -               reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    (               reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    FALSE           reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    TRUE            reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    STRING_LITERAL  reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    CHAR_LITERAL    reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    FLOAT_LITERAL   reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    INTEGER_LITERAL reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    }               reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
-    ELSE            reduce using rule 10 (decl_init -> ID : type_simple = expr ; .)
+    (10) decl_init -> ID : type_simple ASSIGN expr ; .
+    ID              reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    $end            reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    {               reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    RETURN          reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    PRINT           reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    FOR             reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    IF              reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    !               reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    -               reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    (               reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    FALSE           reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    TRUE            reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    STRING_LITERAL  reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    CHAR_LITERAL    reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    FLOAT_LITERAL   reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    INTEGER_LITERAL reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    }               reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
+    ELSE            reduce using rule 10 (decl_init -> ID : type_simple ASSIGN expr ; .)
 
 
 state 91
@@ -2747,9 +2745,9 @@ state 91
 
 state 92
 
-    (45) expr1 -> lval = . expr1
+    (45) expr1 -> lval ASSIGN . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -3587,7 +3585,7 @@ state 118
     BOOLEAN         reduce using rule 78 (index -> [ expr ] .)
     FLOAT           reduce using rule 78 (index -> [ expr ] .)
     INTEGER         reduce using rule 78 (index -> [ expr ] .)
-    =               reduce using rule 78 (index -> [ expr ] .)
+    ASSIGN          reduce using rule 78 (index -> [ expr ] .)
     DEC             reduce using rule 78 (index -> [ expr ] .)
     INC             reduce using rule 78 (index -> [ expr ] .)
     ^               reduce using rule 78 (index -> [ expr ] .)
@@ -3619,25 +3617,25 @@ state 119
 
 state 120
 
-    (8) decl_init -> ID : type_func = { opt_stmt_list } .
-    ID              reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    $end            reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    {               reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    RETURN          reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    PRINT           reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    FOR             reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    IF              reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    !               reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    -               reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    (               reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    FALSE           reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    TRUE            reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    STRING_LITERAL  reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    CHAR_LITERAL    reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    FLOAT_LITERAL   reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    INTEGER_LITERAL reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    }               reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
-    ELSE            reduce using rule 8 (decl_init -> ID : type_func = { opt_stmt_list } .)
+    (8) decl_init -> ID : type_func ASSIGN { opt_stmt_list } .
+    ID              reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    $end            reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    {               reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    RETURN          reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    PRINT           reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    FOR             reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    IF              reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    !               reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    -               reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    (               reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    FALSE           reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    TRUE            reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    STRING_LITERAL  reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    CHAR_LITERAL    reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    FLOAT_LITERAL   reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    INTEGER_LITERAL reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    }               reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
+    ELSE            reduce using rule 8 (decl_init -> ID : type_func ASSIGN { opt_stmt_list } .)
 
 
 state 121
@@ -3790,7 +3788,7 @@ state 131
     (43) expr -> . expr1
     (105) empty -> .
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -3866,7 +3864,7 @@ state 132
     (43) expr -> . expr1
     (105) empty -> .
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -3936,7 +3934,7 @@ state 132
 
 state 133
 
-    (9) decl_init -> ID : type_array_sized = { opt_expr_list } . ;
+    (9) decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } . ;
     ;               shift and go to state 163
 
 
@@ -3947,7 +3945,7 @@ state 134
     (40) expr_list -> . expr , expr_list
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -4034,12 +4032,12 @@ state 136
 
 state 137
 
-    (45) expr1 -> lval = expr1 .
-    ;               reduce using rule 45 (expr1 -> lval = expr1 .)
-    ]               reduce using rule 45 (expr1 -> lval = expr1 .)
-    ,               reduce using rule 45 (expr1 -> lval = expr1 .)
-    }               reduce using rule 45 (expr1 -> lval = expr1 .)
-    )               reduce using rule 45 (expr1 -> lval = expr1 .)
+    (45) expr1 -> lval ASSIGN expr1 .
+    ;               reduce using rule 45 (expr1 -> lval ASSIGN expr1 .)
+    ]               reduce using rule 45 (expr1 -> lval ASSIGN expr1 .)
+    ,               reduce using rule 45 (expr1 -> lval ASSIGN expr1 .)
+    }               reduce using rule 45 (expr1 -> lval ASSIGN expr1 .)
+    )               reduce using rule 45 (expr1 -> lval ASSIGN expr1 .)
 
 
 state 138
@@ -4405,7 +4403,7 @@ state 153
 
     (96) type_func -> FUNCTION type_array_sized ( opt_param_list ) .
     ;               reduce using rule 96 (type_func -> FUNCTION type_array_sized ( opt_param_list ) .)
-    =               reduce using rule 96 (type_func -> FUNCTION type_array_sized ( opt_param_list ) .)
+    ASSIGN          reduce using rule 96 (type_func -> FUNCTION type_array_sized ( opt_param_list ) .)
 
 
 state 154
@@ -4449,7 +4447,7 @@ state 156
 
     (97) type_func -> FUNCTION type_simple ( opt_param_list ) .
     ;               reduce using rule 97 (type_func -> FUNCTION type_simple ( opt_param_list ) .)
-    =               reduce using rule 97 (type_func -> FUNCTION type_simple ( opt_param_list ) .)
+    ASSIGN          reduce using rule 97 (type_func -> FUNCTION type_simple ( opt_param_list ) .)
 
 
 state 157
@@ -4501,10 +4499,10 @@ state 158
     (34) print_stmt -> . PRINT opt_expr_list ;
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -4644,25 +4642,25 @@ state 162
 
 state 163
 
-    (9) decl_init -> ID : type_array_sized = { opt_expr_list } ; .
-    ID              reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    $end            reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    {               reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    RETURN          reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    PRINT           reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    FOR             reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    IF              reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    !               reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    -               reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    (               reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    FALSE           reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    TRUE            reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    STRING_LITERAL  reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    CHAR_LITERAL    reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    FLOAT_LITERAL   reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    INTEGER_LITERAL reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    }               reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
-    ELSE            reduce using rule 9 (decl_init -> ID : type_array_sized = { opt_expr_list } ; .)
+    (9) decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .
+    ID              reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    $end            reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    {               reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    RETURN          reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    PRINT           reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    FOR             reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    IF              reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    !               reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    -               reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    (               reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    FALSE           reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    TRUE            reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    STRING_LITERAL  reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    CHAR_LITERAL    reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    FLOAT_LITERAL   reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    INTEGER_LITERAL reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    }               reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
+    ELSE            reduce using rule 9 (decl_init -> ID : type_array_sized ASSIGN { opt_expr_list } ; .)
 
 
 state 164
@@ -4771,10 +4769,10 @@ state 171
     (24) if_stmt_open -> . if_cond closed_stmt ELSE if_stmt_open
     (25) if_stmt_open -> . if_cond stmt
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -4926,10 +4924,10 @@ state 174
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5018,7 +5016,7 @@ state 175
     (43) expr -> . expr1
     (105) empty -> .
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5113,7 +5111,7 @@ state 177
     (78) index -> [ . expr ]
     (43) expr -> . expr1
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5227,10 +5225,10 @@ state 179
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5367,10 +5365,10 @@ state 182
     (34) print_stmt -> . PRINT opt_expr_list ;
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5466,7 +5464,7 @@ state 184
     (43) expr -> . expr1
     (105) empty -> .
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
+    (45) expr1 -> . lval ASSIGN expr1
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index
@@ -5579,10 +5577,10 @@ state 188
     (26) for_header -> . FOR ( opt_expr ; opt_expr ; opt_expr )
     (22) if_cond -> . IF ( opt_expr )
     (44) expr1 -> . expr2
-    (45) expr1 -> . lval = expr1
-    (8) decl_init -> . ID : type_func = { opt_stmt_list }
-    (9) decl_init -> . ID : type_array_sized = { opt_expr_list } ;
-    (10) decl_init -> . ID : type_simple = expr ;
+    (45) expr1 -> . lval ASSIGN expr1
+    (8) decl_init -> . ID : type_func ASSIGN { opt_stmt_list }
+    (9) decl_init -> . ID : type_array_sized ASSIGN { opt_expr_list } ;
+    (10) decl_init -> . ID : type_simple ASSIGN expr ;
     (48) expr2 -> . expr3
     (49) expr2 -> . expr2 LOR expr3
     (46) lval -> . ID index

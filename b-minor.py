@@ -18,11 +18,14 @@ Opciones de formato:
 #argparse
 
 import argparse
+import ast
 import sys
 
 from rich import print
 from lexer import tokenize
 from errors import error
+from parser import parse
+from ast_utils import print_astt
 
 # Muestra un mensaje de ayuda cuando no se proporciona ningun argumento extra
 def usage(exit_code=1):
@@ -70,6 +73,7 @@ def main():
     check_invalid_args()
 
     args = parse_args()
+    
 
     if args.filename:
         fname = args.filename
@@ -82,9 +86,19 @@ def main():
         with open(fname, encoding="utf-8") as file:
             source = file.read()
         
+        # TO DO: separa los scaneos con sus argumenotos propios como el arbol y el png
         if args.scan:
             flex = fname.split(".")[0] + ".lex"
             tokenize(source)
+
+            program_ast = parse(source)
+            program_ast.pretty()
+
+            from ast_to_png import ast_to_graph
+            import os
+            g = ast_to_graph(program_ast)
+            g.render("ast", cleanup=True)  # genera ast.png
+            os.startfile("ast.png")
             
 
 if __name__ == "__main__":

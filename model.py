@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from multimethod import multimeta, multimethod
 from typing      import List, Union
+import rich
 
 # =====================================================================
 # Clases Abstractas
@@ -12,6 +13,13 @@ class Visitor(metaclass=multimeta):
 class Node:
     def accept(self, v: Visitor, *args, **kwargs):
         return v.visit(self, *args, **kwargs)
+
+    def pretty(self, indent=0):
+        console = rich.console.Console()
+        console.print("\n[bold yellow]Árbol de sintaxis (AST) en consola:[/bold yellow]")
+        #TO DO: Implementarl el ast_utils aqui para que no se llame como modulo
+        from ast_utils import print_astt
+        print_astt(self)
 
 @dataclass
 class Statement(Node):
