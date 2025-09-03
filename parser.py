@@ -39,19 +39,19 @@ class Parser(sly.Parser):
 	@_("ID ':' type_simple ';'")
 	def decl(self, p):
 		# Declaración sin inicialización
-		return BinOper('decl', Literal(p.ID), Literal(p.type_simple))
+		return Decl(name=p.ID, type=p.type_simple)
 
 
 	@_("ID ':' type_array_sized ';'")
 	def decl(self, p):
 		# Declaración de arreglo sin inicialización
-		return BinOper('decl_array', Literal(p.ID), Literal(p.type_array_sized))
+		return Decl('decl_array', Literal(p.ID), Literal(p.type_array_sized))
 
 
 	@_("ID ':' type_func ';'")
 	def decl(self, p):
 		# Declaración de función sin inicialización
-		return BinOper('decl_func', Literal(p.ID), Literal(p.type_func))
+		return Decl('decl_func', Literal(p.ID), Literal(p.type_func))
 
 
 	@_("decl_init")
@@ -63,7 +63,7 @@ class Parser(sly.Parser):
 	@_("ID ':' type_simple ASSIGN expr ';'")
 	def decl_init(self, p):
 		# Declaración con inicialización
-		return BinOper('decl_init', Literal(p.ID), p.expr)
+		return Decl(name=p.ID, type=p.type_simple, value=p.expr)
 
 	@_("ID ':' type_array_sized ASSIGN '{' opt_expr_list '}' ';'")
 	def decl_init(self, p):
@@ -140,7 +140,7 @@ class Parser(sly.Parser):
 	@_("print_stmt")
 	@_("return_stmt")
 	@_("block_stmt")
-	@_("decl")
+	#@_("decl")
 	@_("expr ';'")
 	def simple_stmt(self, p):
 		...
@@ -190,7 +190,7 @@ class Parser(sly.Parser):
 
 	@_("lval ASSIGN expr1")
 	def expr1(self, p):
-		...
+		return Assign(name=p.lval, value=p.expr1)
 		
 	@_("expr2")
 	def expr1(self, p):
