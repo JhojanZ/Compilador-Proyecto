@@ -78,3 +78,18 @@ class Boolean(Literal):
     def __post_init__(self):
         assert isinstance(self.value, bool), "Value debe ser un 'boolean'"
         self.type = 'boolean'
+
+# =====================================================================
+# Declaraciones y asignaciones
+# =====================================================================
+
+@dataclass
+class Decl(Statement):
+    name : str
+    type : str
+    value: Expression = None   # opcional, si no hay inicialización
+
+@dataclass
+class Assign(Statement):
+    name : str
+    value: Expression
