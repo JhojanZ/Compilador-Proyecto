@@ -108,8 +108,8 @@ Rule 104   empty -> <empty>
 
 Unused terminals:
 
-    AUTO
     DO
+    AUTO
     WHILE
 
 Terminals, with rules where they appear:

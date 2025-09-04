@@ -1,4 +1,4 @@
 n : integer = 10;
 i : integer;
-sum : integer = 0;
+sum : float;
 
