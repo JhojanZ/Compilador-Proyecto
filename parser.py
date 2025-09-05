@@ -12,7 +12,6 @@ def _L(node, lineno):
 	node.lineno = lineno
 	return node
 
-
 class Parser(sly.Parser):
 	log = logging.getLogger()
 	log.setLevel(logging.ERROR)
