@@ -93,3 +93,32 @@ class Decl(Statement):
 class Assign(Statement):
     name : str
     value: Expression
+
+# =====================================================================
+# Control de flujo
+# =====================================================================
+
+@dataclass
+class If(Statement):
+    cond        : Expression
+    then_branch : Statement
+    else_branch : Statement = None   # opcional
+
+@dataclass
+class For(Statement):
+    init   : Expression
+    cond   : Expression
+    update : Expression
+    body   : Statement
+    
+@dataclass
+class Block(Statement):
+    stmts: List[Statement] = field(default_factory=list)
+
+@dataclass
+class Print(Statement):
+    values: List[Expression] = field(default_factory=list)
+
+@dataclass
+class Return(Statement):
+    value: Expression = None
