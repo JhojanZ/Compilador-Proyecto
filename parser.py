@@ -45,13 +45,13 @@ class Parser(sly.Parser):
 	@_("ID ':' type_array_sized ';'")
 	def decl(self, p):
 		# Declaración de arreglo sin inicialización
-		return Decl('decl_array', Literal(p.ID), Literal(p.type_array_sized))
+		return Decl(name=p.ID, type=p.type_array_sized)
 
 
 	@_("ID ':' type_func ';'")
 	def decl(self, p):
 		# Declaración de función sin inicialización
-		return Decl('decl_func', Literal(p.ID), Literal(p.type_func))
+		return Decl(name=p.ID, type=p.type_func)
 
 
 	@_("decl_init")
@@ -67,73 +67,73 @@ class Parser(sly.Parser):
 
 	@_("ID ':' type_array_sized ASSIGN '{' opt_expr_list '}' ';'")
 	def decl_init(self, p):
-		...
+		return Decl(name=p.ID, type=p.type_array_sized, value=p.opt_expr_list)
 
 	@_("ID ':' type_func ASSIGN '{' opt_stmt_list '}'")
 	def decl_init(self, p):
-		...
+		return Decl(name=p.ID, type=p.type_func, value=Block(p.opt_stmt_list))
 	
 	# Statements
 	
 	@_("stmt_list")
 	def opt_stmt_list(self, p):
-		...
+		return p.stmt_list
 
 	@_("empty")
 	def opt_stmt_list(self, p):
-		...
+		return []
 
 	@_("stmt stmt_list")
 	def stmt_list(self, p):
-		...
+		return [p.stmt] + p.stmt_list
 
 	@_("stmt")
 	def stmt_list(self, p):
-		...
+		return [p.stmt]
 
 	@_("open_stmt")
 	@_("closed_stmt")
 	def stmt(self, p):
-		...
+		return p[0]
 
 	@_("if_stmt_closed")
 	@_("for_stmt_closed")
 	@_("simple_stmt")
 	def closed_stmt(self, p):
-		...
+		return p[0]
 		
 	@_("if_stmt_open",
-	   "for_stmt_open")
+	"for_stmt_open")
 	def open_stmt(self, p):
-		...
+		return p[0]
 		
 	@_("IF '(' opt_expr ')'")
 	def if_cond(self, p):
-		...
+		return p.opt_expr
 
 	@_("if_cond closed_stmt ELSE closed_stmt")
 	def if_stmt_closed(self, p):
-		...
-	
+		return If(cond=p[0], then_branch=p[1], else_branch=p[3])
+
 	@_("if_cond stmt")	
 	def if_stmt_open(self, p):
-		...
+		return If(cond=p[0], then_branch=p[1], else_branch=None)
 		
 	@_("if_cond closed_stmt ELSE if_stmt_open")	
 	def if_stmt_open(self, p):
-		...
+		return If(cond=p[0], then_branch=p[1], else_branch=p[3])
 
 	@_("FOR '(' opt_expr ';' opt_expr ';' opt_expr ')'")
 	def for_header(self, p):
-		...
+		return (p[1], p[3], p[5])
 
 	@_("for_header open_stmt")
 	def for_stmt_open(self, p):
-		...
+		return For(init=p[0][0], cond=p[0][1], update=p[0][2], body=p[1])
 		
 	@_("for_header closed_stmt")
 	def for_stmt_closed(self, p):
-		...
+		return For(init=p[0][0], cond=p[0][1], update=p[0][2], body=p[1])
 		
 	# Simple statements are not recursive
 	
@@ -143,19 +143,22 @@ class Parser(sly.Parser):
 	#@_("decl")
 	@_("expr ';'")
 	def simple_stmt(self, p):
-		...
+		return p[0]
 
 	@_("PRINT opt_expr_list ';'")
 	def print_stmt(self, p):
-		...
+		return Print(p.opt_expr_list)
 		
 	@_("RETURN opt_expr ';'")
 	def return_stmt(self, p):
-		...
+		return Return(p.opt_expr)
 
 	@_("'{' stmt_list '}'")
 	def block_stmt(self, p):
-		...
+		return Block(p.stmt_list)
+
+
+	
 	
 	# Expressions <-- me
 	
