@@ -94,11 +94,13 @@ def main():
             program_ast = parse(source)
             program_ast.pretty()
 
+            """
             from ast_to_png import ast_to_graph
             import os
             g = ast_to_graph(program_ast)
             g.render("ast", cleanup=True)  # genera ast.png
             os.startfile("ast.png")
+            """
             
 
 if __name__ == "__main__":

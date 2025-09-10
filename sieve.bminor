@@ -1,4 +1,1 @@
-n : integer = 10;
-i : integer;
-sum : float;
-
+x : integer = 8;

@@ -9,6 +9,7 @@ from model  import *
 
 
 def _L(node, lineno):
+	print(f"Asignando linea {lineno} a {node}")
 	node.lineno = lineno
 	return node
 
@@ -38,6 +39,8 @@ class Parser(sly.Parser):
 	@_("ID ':' type_simple ';'")
 	def decl(self, p):
 		# Declaración sin inicialización
+		print(p, " se asigno el id")
+
 		return Decl(name=p.ID, type=p.type_simple)
 
 
@@ -56,13 +59,15 @@ class Parser(sly.Parser):
 	@_("decl_init")
 	def decl(self, p):
 		# Inicialización delegada
+		print(p, " se asigno el declar init con init")
 		return p.decl_init
 
 
 	@_("ID ':' type_simple ASSIGN expr ';'")
 	def decl_init(self, p):
 		# Declaración con inicialización
-		return Decl(name=p.ID, type=p.type_simple, value=p.expr)
+		print(p.expr.value, " se asigno el id con init")
+		return Decl(name=p.ID, type=p.type_simple, value=p.expr.value)
 
 	@_("ID ':' type_array_sized ASSIGN '{' opt_expr_list '}' ';'")
 	def decl_init(self, p):
@@ -139,9 +144,10 @@ class Parser(sly.Parser):
 	@_("print_stmt")
 	@_("return_stmt")
 	@_("block_stmt")
-	#@_("decl")
+	@_("decl")
 	@_("expr ';'")
 	def simple_stmt(self, p):
+		print(p[0], " se asigno el simple stmt")
 		return p[0]
 
 	@_("PRINT opt_expr_list ';'")
@@ -175,9 +181,9 @@ class Parser(sly.Parser):
 		
 	@_("expr")
 	def expr_list(self, p):
-		...
+		print(p, " se asigno el expr list")
+		return [p.expr]
 
-	# TODO
 	@_("empty")
 	def opt_expr(self, p):
 		...
@@ -188,19 +194,22 @@ class Parser(sly.Parser):
 
 	@_("expr1")
 	def expr(self, p):
-		...
+		print(p.expr1, " se asigno el expr1 ||")
+		return p.expr1
 
 	@_("lval ASSIGN expr1")
 	def expr1(self, p):
+		print(p, " se asigno el expr1 con el assing")
 		return Assign(name=p.lval, value=p.expr1)
 		
 	@_("expr2")
 	def expr1(self, p):
-		...
+		# Siempre devolver el nodo de expr2
+		return p.expr2
 
 	@_("ID")
 	def lval(self, p):
-		...
+		return p.ID
 
 	@_("ID index")
 	def lval(self, p):
@@ -212,7 +221,8 @@ class Parser(sly.Parser):
 
 	@_("expr3")
 	def expr2(self, p):
-		...
+		# Siempre devolver el nodo de expr3
+		return p.expr3
 
 	@_("expr3 LAND expr4")
 	def expr3(self, p):
@@ -220,7 +230,8 @@ class Parser(sly.Parser):
 
 	@_("expr4")
 	def expr3(self, p):
-		...
+		# Siempre devolver el nodo de expr4
+		return p.expr4
 
 	@_("expr4 EQ expr5")
 	@_("expr4 NEQ expr5")
@@ -233,7 +244,8 @@ class Parser(sly.Parser):
 
 	@_("expr5")
 	def expr4(self, p):
-		...
+		# Siempre devolver el nodo de expr5
+		return p.expr5
 
 	@_("expr5 '+' expr6")
 	@_("expr5 '-' expr6")
@@ -242,7 +254,8 @@ class Parser(sly.Parser):
 
 	@_("expr6")
 	def expr5(self, p):
-		...
+		# Siempre devolver el nodo de expr6
+		return p.expr6
 
 	@_("expr6 '*' expr7")
 	@_("expr6 '/' expr7")
@@ -252,7 +265,8 @@ class Parser(sly.Parser):
 
 	@_("expr7")
 	def expr6(self, p):
-		...
+		# Siempre devolver el nodo de expr7
+		return p.expr7
 
 	@_("expr7 '^' expr8")
 	def expr7(self, p):
@@ -260,7 +274,8 @@ class Parser(sly.Parser):
 
 	@_("expr8")
 	def expr7(self, p):
-		...
+		# Siempre devolver el nodo de expr8
+		return p.expr8
 		
 	@_("'-' expr8")
 	@_("'!' expr8")
@@ -269,7 +284,8 @@ class Parser(sly.Parser):
 		
 	@_("expr9")
 	def expr8(self, p):
-		...
+		# Siempre devolver el nodo de expr9
+		return p.expr9
 
 	@_("expr9 INC")
 	def expr9(self, p):

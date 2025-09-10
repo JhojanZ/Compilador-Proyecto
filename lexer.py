@@ -25,7 +25,9 @@ class Lexer(sly.Lexer):
 
         # Other simbols
         'ID', 'INTEGER_LITERAL', 'FLOAT_LITERAL', 'STRING_LITERAL', 'CHAR_LITERAL',
+
     }
+        
 
     
 
