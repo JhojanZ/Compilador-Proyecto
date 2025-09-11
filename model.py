@@ -62,7 +62,7 @@ class Integer(Literal):
     def __post_init__(self):
         assert isinstance(self.value, int), "Value debe ser un 'integer'"
         self.type = 'integer'
-
+        
 @dataclass
 class Float(Literal):
     value : float
@@ -93,6 +93,88 @@ class Decl(Statement):
 class Assign(Statement):
     name : str
     value: Expression
+
+# =====================================================================
+# Visitor/Interpreter para ejecutar asignaciones y declaraciones
+# =====================================================================
+class Interpreter(Visitor):
+    def __init__(self):
+        self.symbols = {}
+
+    def visit(self, node):
+        method_name = f'visit_{type(node).__name__}'
+        visitor = getattr(self, method_name, self.generic_visit)
+        return visitor(node)
+
+    def generic_visit(self, node):
+        raise Exception(f'No visit_{type(node).__name__} method')
+
+    def visit_Program(self, node):
+        for stmt in node.body:
+            self.visit(stmt)
+
+    def visit_Decl(self, node):
+        value = self.visit(node.value) if node.value else None
+        self.symbols[node.name] = value
+        return value
+
+    def visit_Assign(self, node):
+        value = self.visit(node.value)
+        self.symbols[node.name] = value
+        return value
+
+    def visit_Integer(self, node):
+        return node.value
+
+    def visit_Float(self, node):
+        return node.value
+
+    def visit_Boolean(self, node):
+        return node.value
+
+    def visit_Literal(self, node):
+        return node.value
+
+    def visit_BinOper(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if node.oper == '+':
+            return left + right
+        elif node.oper == '-':
+            return left - right
+        elif node.oper == '*':
+            return left * right
+        elif node.oper == '/':
+            return left / right
+        elif node.oper == '%':
+            return left % right
+        elif node.oper == '==':
+            return left == right
+        elif node.oper == '!=':
+            return left != right
+        elif node.oper == '<':
+            return left < right
+        elif node.oper == '<=':
+            return left <= right
+        elif node.oper == '>':
+            return left > right
+        elif node.oper == '>=':
+            return left >= right
+        elif node.oper == '&&':
+            return left and right
+        elif node.oper == '||':
+            return left or right
+        else:
+            raise Exception(f'Operador binario no soportado: {node.oper}')
+
+    def visit_UnaryOper(self, node):
+        expr = self.visit(node.expr)
+        if node.oper == '-':
+            return -expr
+        elif node.oper == '!':
+            return not expr
+        else:
+            raise Exception(f'Operador unario no soportado: {node.oper}')
 
 # =====================================================================
 # Control de flujo
